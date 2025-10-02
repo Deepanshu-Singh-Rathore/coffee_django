@@ -25,7 +25,8 @@ urlpatterns = [
     path('', views.HomePage, name='home'),
     path('about/', views.about, name='about'),
     path('service/', views.service, name='service'),
-    path('menu/', views.menu, name='menu'),
+    path('menu/', views.menu_list, name='menu_list'),
+    path('menu/add/', views.menu_add, name='menu_add'),
     path('reservation/', views.reservation, name='reservation'),
     path('testimonial/', views.testimonial, name='testimonial'),
     path('contact/', views.contact, name='contact'),
@@ -33,3 +34,4 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.BASE_DIR / 'static')
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

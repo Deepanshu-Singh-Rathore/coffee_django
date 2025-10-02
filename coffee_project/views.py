@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from core.models import MenuItem
+from core.forms import MenuItemForm
 
 
 def HomePage(request):
@@ -13,8 +15,19 @@ def service(request):
     return render(request, "service.html")
 
 
-def menu(request):
-    return render(request, "menu.html")
+def menu_list(request):
+    items = MenuItem.objects.all().order_by('name')
+    return render(request, "menu.html", {"items": items})
+
+def menu_add(request):
+    if request.method == "POST":
+        form = MenuItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect("menu_list")
+    else:
+        form = MenuItemForm()
+    return render(request, "menu_add.html", {"form": form})
 
 
 def reservation(request):

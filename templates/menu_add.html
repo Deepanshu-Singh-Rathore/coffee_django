@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Menu Item</title>
+    <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
+</head>
+<body>
+    <h2>Add Menu Item</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Item</button>
+    </form>
+    <a href="{% url 'menu_list' %}">Back to Menu</a>
+</body>
+</html>

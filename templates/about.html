@@ -42,7 +42,7 @@
                     <a href="{% url 'home' %}" class="nav-item nav-link">Home</a>
                     <a href="{% url 'about' %}" class="nav-item nav-link active">About</a>
                     <a href="{% url 'service' %}" class="nav-item nav-link">Service</a>
-                    <a href="{% url 'menu' %}" class="nav-item nav-link">Menu</a>
+                    <a href="{% url 'menu_list' %}" class="nav-item nav-link">Menu</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
                         <div class="dropdown-menu text-capitalize">
@@ -58,6 +58,7 @@
     <!-- Navbar End -->
 
 
+    {% include 'header.html' %}
     <!-- Page Header Start -->
     <div class="container-fluid page-header mb-5 position-relative overlay-bottom">
         <div class="d-flex flex-column align-items-center justify-content-center pt-0 pt-lg-5" style="min-height: 400px">
@@ -105,7 +106,7 @@
     <!-- About End -->
 
 
-    <!-- Footer Start -->
+    {% include 'footer.html' %}
     <div class="container-fluid footer text-white mt-5 pt-5 px-0 position-relative overlay-top">
         <div class="row mx-0 pt-5 px-sm-3 px-lg-5 mt-4">
             <div class="col-lg-3 col-md-6 mb-5">

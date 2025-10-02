@@ -1,3 +1,4 @@
+{# Removed duplicate HTML and simple list #}
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
@@ -37,12 +38,9 @@
             <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                <div class="navbar-nav ml-auto p-4">
-                    <a href="{% url 'home' %}" class="nav-item nav-link">Home</a>
-                    <a href="{% url 'about' %}" class="nav-item nav-link">About</a>
+        {% include 'header.html' %}
                     <a href="{% url 'service' %}" class="nav-item nav-link">Service</a>
-                    <a href="{% url 'menu' %}" class="nav-item nav-link active">Menu</a>
+                    <a href="{% url 'menu_list' %}" class="nav-item nav-link active">Menu</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
                         <div class="dropdown-menu text-capitalize">
@@ -75,80 +73,61 @@
     <!-- Menu Start -->
     <div class="container-fluid pt-5">
         <div class="container">
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <a href="{% url 'menu_add' %}" class="btn btn-primary">Add New Item</a>
+                </div>
+                {% for item in items %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        {% if item.image %}
+                        <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.name }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.name }}</h5>
+                            <p class="card-text">{{ item.description }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <strong>${{ item.price }}</strong>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <p>No menu items yet.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
             <div class="section-title">
                 <h4 class="text-primary text-uppercase" style="letter-spacing: 5px;">Menu & Pricing</h4>
                 <h1 class="display-4">Competitive Pricing</h1>
             </div>
             <div class="row">
-                <div class="col-lg-6">
-                    <h1 class="mb-5">Hot Coffee</h1>
-                    <div class="row align-items-center mb-5">
+                {% for item in items %}
+                <div class="col-lg-6 mb-5">
+                    <div class="row align-items-center">
                         <div class="col-4 col-sm-3">
-                            <img class="w-100 rounded-circle mb-3 mb-sm-0" src="{% static 'img/menu-1.jpg' %}" alt="">
-                            <h5 class="menu-price">$5</h5>
+                            {% if item.image %}
+                                <img class="w-100 rounded-circle mb-3 mb-sm-0" src="{{ item.image.url }}" alt="{{ item.name }}">
+                            {% else %}
+                                <img class="w-100 rounded-circle mb-3 mb-sm-0" src="{% static 'img/menu-1.jpg' %}" alt="default">
+                            {% endif %}
+                            <h5 class="menu-price">${{ item.price }}</h5>
                         </div>
                         <div class="col-8 col-sm-9">
-                            <h4>Black Coffee</h4>
-                            <p class="m-0">Sit lorem ipsum et diam elitr est dolor sed duo guberg sea et et lorem dolor</p>
-                        </div>
-                    </div>
-                    <div class="row align-items-center mb-5">
-                        <div class="col-4 col-sm-3">
-                            <img class="w-100 rounded-circle mb-3 mb-sm-0" src="{% static 'img/menu-2.jpg' %}" alt="">
-                            <h5 class="menu-price">$7</h5>
-                        </div>
-                        <div class="col-8 col-sm-9">
-                            <h4>Chocolete Coffee</h4>
-                            <p class="m-0">Sit lorem ipsum et diam elitr est dolor sed duo guberg sea et et lorem dolor</p>
-                        </div>
-                    </div>
-                    <div class="row align-items-center mb-5">
-                        <div class="col-4 col-sm-3">
-                            <img class="w-100 rounded-circle mb-3 mb-sm-0" src="{% static 'img/menu-3.jpg' %}" alt="">
-                            <h5 class="menu-price">$9</h5>
-                        </div>
-                        <div class="col-8 col-sm-9">
-                            <h4>Coffee With Milk</h4>
-                            <p class="m-0">Sit lorem ipsum et diam elitr est dolor sed duo guberg sea et et lorem dolor</p>
+                            <h4>{{ item.name }}</h4>
+                            <p class="m-0">{{ item.description }}</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <h1 class="mb-5">Cold Coffee</h1>
-                    <div class="row align-items-center mb-5">
-                        <div class="col-4 col-sm-3">
-                            <img class="w-100 rounded-circle mb-3 mb-sm-0" src="{% static 'img/menu-1.jpg' %}" alt="">
-                            <h5 class="menu-price">$5</h5>
-                        </div>
-                        <div class="col-8 col-sm-9">
-                            <h4>Black Coffee</h4>
-                            <p class="m-0">Sit lorem ipsum et diam elitr est dolor sed duo guberg sea et et lorem dolor</p>
-                        </div>
-                    </div>
-                    <div class="row align-items-center mb-5">
-                        <div class="col-4 col-sm-3">
-                            <img class="w-100 rounded-circle mb-3 mb-sm-0" src="{% static 'img/menu-2.jpg' %}" alt="">
-                            <h5 class="menu-price">$7</h5>
-                        </div>
-                        <div class="col-8 col-sm-9">
-                            <h4>Chocolete Coffee</h4>
-                            <p class="m-0">Sit lorem ipsum et diam elitr est dolor sed duo guberg sea et et lorem dolor</p>
-                        </div>
-                    </div>
-                    <div class="row align-items-center mb-5">
-                        <div class="col-4 col-sm-3">
-                            <img class="w-100 rounded-circle mb-3 mb-sm-0" src="{% static 'img/menu-3.jpg' %}" alt="">
-                            <h5 class="menu-price">$9</h5>
-                        </div>
-                        <div class="col-8 col-sm-9">
-                            <h4>Coffee With Milk</h4>
-                            <p class="m-0">Sit lorem ipsum et diam elitr est dolor sed duo guberg sea et et lorem dolor</p>
-                        </div>
-                    </div>
+                {% empty %}
+                <div class="col-12">
+                    <p>No menu items yet.</p>
                 </div>
+                {% endfor %}
             </div>
-        </div>
-    </div>
     <!-- Menu End -->
 
 
