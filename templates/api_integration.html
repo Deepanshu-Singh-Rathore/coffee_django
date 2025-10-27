@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>API Integration Demo</title>
+    <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <div class="container py-5">
+        <h1 class="display-4 mb-4">API Integration</h1>
+        <p class="mb-4">This page demonstrates fetching data from a third-party API at request time.</p>
+
+        {% if error %}
+            <div class="alert alert-danger">Failed to load API data: {{ error }}</div>
+        {% else %}
+            {% if third_party %}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Random Cat Fact</h5>
+                        <p class="card-text">{{ third_party.fact }}</p>
+                    </div>
+                </div>
+            {% else %}
+                <p>No data returned yet.</p>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    {% include 'footer.html' %}
+</body>
+</html>

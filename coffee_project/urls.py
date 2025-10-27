@@ -15,10 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from coffee_project import views
 from django.conf import settings
 from django.conf.urls.static import static
+from blog import views as blog_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,6 +31,16 @@ urlpatterns = [
     path('reservation/', views.reservation, name='reservation'),
     path('testimonial/', views.testimonial, name='testimonial'),
     path('contact/', views.contact, name='contact'),
+    # Blog
+    path('blog/', blog_views.blog_list, name='blog_list'),
+    path('blog/<slug:slug>/', blog_views.blog_detail, name='blog_detail'),
+    # Simple JSON APIs
+    path('api/menu/', views.api_menu, name='api_menu'),
+    path('api/blog/', views.api_blog_posts, name='api_blog_posts'),
+    path('api/contact/', views.api_contact_create, name='api_contact_create'),
+    path('api-integration/', views.api_integration_page, name='api_integration'),
+    # DRF v1 API
+    path('api/v1/', include('api.urls')),
 ]
 
 if settings.DEBUG:
