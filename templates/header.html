@@ -10,20 +10,22 @@
         </button>
         <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
             <div class="navbar-nav ml-auto p-4">
-                <a href="{% url 'home' %}" class="nav-item nav-link active">Home</a>
-                <a href="{% url 'about' %}" class="nav-item nav-link">About</a>
-                <a href="{% url 'service' %}" class="nav-item nav-link">Service</a>
-                <a href="{% url 'menu_list' %}" class="nav-item nav-link">Menu</a>
-                <a href="{% url 'blog_list' %}" class="nav-item nav-link">Blog</a>
+                {% with current=request.resolver_match.url_name %}
+                <a href="{% url 'home' %}" class="nav-item nav-link {% if current == 'home' %}active{% endif %}">Home</a>
+                <a href="{% url 'about' %}" class="nav-item nav-link {% if current == 'about' %}active{% endif %}">About</a>
+                <a href="{% url 'service' %}" class="nav-item nav-link {% if current == 'service' %}active{% endif %}">Service</a>
+                <a href="{% url 'menu_list' %}" class="nav-item nav-link {% if current == 'menu_list' %}active{% endif %}">Menu</a>
+                <a href="{% url 'blog_list' %}" class="nav-item nav-link {% if current == 'blog_list' %}active{% endif %}">Blog</a>
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
+                    <a href="#" class="nav-link dropdown-toggle {% if current in 'reservation,testimonial,api_integration' %}active{% endif %}" data-toggle="dropdown">Pages</a>
                     <div class="dropdown-menu text-capitalize">
-                        <a href="{% url 'reservation' %}" class="dropdown-item">Reservation</a>
-                        <a href="{% url 'testimonial' %}" class="dropdown-item">Testimonial</a>
-                        <a href="{% url 'api_integration' %}" class="dropdown-item">API Integration</a>
+                        <a href="{% url 'reservation' %}" class="dropdown-item {% if current == 'reservation' %}active{% endif %}">Reservation</a>
+                        <a href="{% url 'testimonial' %}" class="dropdown-item {% if current == 'testimonial' %}active{% endif %}">Testimonial</a>
+                        <a href="{% url 'api_integration' %}" class="dropdown-item {% if current == 'api_integration' %}active{% endif %}">API Integration</a>
                     </div>
                 </div>
-                <a href="{% url 'contact' %}" class="nav-item nav-link">Contact</a>
+                <a href="{% url 'contact' %}" class="nav-item nav-link {% if current == 'contact' %}active{% endif %}">Contact</a>
+                {% endwith %}
             </div>
         </div>
     </nav>

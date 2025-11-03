@@ -223,6 +223,68 @@
     </div>
     <!-- Promo End -->
 
+    <!-- Featured Menu Start (dynamic) -->
+    <div class="container-fluid pt-5">
+        <div class="container">
+            <div class="section-title">
+                <h4 class="text-primary text-uppercase" style="letter-spacing: 5px;">Featured</h4>
+                <h1 class="display-4">Chef's Picks</h1>
+            </div>
+            <div class="row">
+                {% for item in featured_menu %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="position-relative">
+                            {% if item.image %}
+                                <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.name }}">
+                            {% else %}
+                                <img src="{% static 'img/menu-1.jpg' %}" class="card-img-top" alt="{{ item.name }}">
+                            {% endif %}
+                            <span class="badge badge-primary position-absolute" style="right: 12px; top: 12px; font-size: 0.95rem;">${{ item.price }}</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title mb-1">{{ item.name }}</h5>
+                            <p class="card-text text-muted" style="min-height: 48px;">{{ item.description|default:'Tasty and freshly brewed.' }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12"><p>Add featured menu items in admin to show them here.</p></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- Featured Menu End -->
+
+    <!-- Latest From The Blog Start (dynamic) -->
+    <div class="container-fluid pt-5">
+        <div class="container">
+            <div class="section-title">
+                <h4 class="text-primary text-uppercase" style="letter-spacing: 5px;">From The Blog</h4>
+                <h1 class="display-4">Latest Posts</h1>
+            </div>
+            <div class="row">
+                {% for p in latest_posts %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        {% if p.image %}<img class="card-img-top" src="{{ p.image.url }}" alt="{{ p.title }}">{% endif %}
+                        <div class="card-body">
+                            <h5><a href="{% url 'blog_detail' p.slug %}">{{ p.title }}</a></h5>
+                            <div class="text-muted small">{{ p.created_at|date:'M d, Y' }} · {{ p.category.name }}</div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12"><p>Publish some posts to display them here.</p></div>
+                {% endfor %}
+            </div>
+            <div class="text-center mt-2">
+                <a class="btn btn-outline-primary" href="{% url 'blog_list' %}">View All Posts</a>
+            </div>
+        </div>
+    </div>
+    <!-- Latest From The Blog End -->
+
     <!-- Offer Start -->
     <div class="offer container-fluid my-5 py-5 text-center position-relative overlay-top overlay-bottom">
         <div class="container py-5">
