@@ -3,6 +3,7 @@ from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.conf import settings
 from core.models import MenuItem, ContactMessage, Reservation
+from core.models import Testimonial as TestimonialModel, AboutSection as AboutSectionModel
 from hero.models import HeroSlide
 from feature.models import Feature as FeatureModel
 from promo.models import Promo as PromoModel
@@ -30,7 +31,8 @@ def HomePage(request):
 
 
 def about(request):
-    return render(request, "about.html")
+    about_section = AboutSectionModel.objects.first()
+    return render(request, "about.html", {"about": about_section})
 
 
 def service(request):
@@ -73,7 +75,8 @@ def reservation(request):
 
 
 def testimonial(request):
-    return render(request, "testimonial.html")
+    testimonials = TestimonialModel.objects.filter(is_active=True)
+    return render(request, "testimonial.html", {"testimonials": testimonials})
 
 
 def contact(request):
@@ -104,6 +107,12 @@ def contact(request):
                 email.send()
                 success = True
             except Exception as e:
+                # Log error details in development for easier diagnosis
+                try:
+                    if settings.DEBUG:
+                        print("Email send error:", e)
+                except Exception:
+                    pass
                 email_error = "Sorry, it seems our mail server is not responding. Please try again later."
     else:
         form = ContactForm()

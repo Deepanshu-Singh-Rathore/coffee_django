@@ -53,46 +53,33 @@
                 <h1 class="display-4">Our Clients Say</h1>
             </div>
             <div class="owl-carousel testimonial-carousel">
+                {% for t in testimonials %}
+                <div class="testimonial-item">
+                    <div class="d-flex align-items-center mb-3">
+                        {% if t.photo %}
+                            <img class="img-fluid" src="{{ t.photo.url }}" alt="{{ t.name }}">
+                        {% else %}
+                            <img class="img-fluid" src="{% static 'img/testimonial-1.jpg' %}" alt="{{ t.name }}">
+                        {% endif %}
+                        <div class="ml-3">
+                            <h4>{{ t.name }}</h4>
+                            <i>{{ t.role }}</i>
+                        </div>
+                    </div>
+                    <p class="m-0">{{ t.quote }}</p>
+                </div>
+                {% empty %}
                 <div class="testimonial-item">
                     <div class="d-flex align-items-center mb-3">
                         <img class="img-fluid" src="{% static 'img/testimonial-1.jpg' %}" alt="">
                         <div class="ml-3">
-                            <h4>Client Name</h4>
-                            <i>Profession</i>
+                            <h4>Welcome!</h4>
+                            <i>Be our first testimonial</i>
                         </div>
                     </div>
-                    <p class="m-0">Sed ea amet kasd elitr stet, stet rebum et ipsum est duo elitr eirmod clita lorem. Dolor tempor ipsum sanct clita</p>
+                    <p class="m-0">Add testimonials in the admin to see them here.</p>
                 </div>
-                <div class="testimonial-item">
-                    <div class="d-flex align-items-center mb-3">
-                        <img class="img-fluid" src="{% static 'img/testimonial-2.jpg' %}" alt="">
-                        <div class="ml-3">
-                            <h4>Client Name</h4>
-                            <i>Profession</i>
-                        </div>
-                    </div>
-                    <p class="m-0">Sed ea amet kasd elitr stet, stet rebum et ipsum est duo elitr eirmod clita lorem. Dolor tempor ipsum sanct clita</p>
-                </div>
-                <div class="testimonial-item">
-                    <div class="d-flex align-items-center mb-3">
-                        <img class="img-fluid" src="{% static 'img/testimonial-3.jpg' %}" alt="">
-                        <div class="ml-3">
-                            <h4>Client Name</h4>
-                            <i>Profession</i>
-                        </div>
-                    </div>
-                    <p class="m-0">Sed ea amet kasd elitr stet, stet rebum et ipsum est duo elitr eirmod clita lorem. Dolor tempor ipsum sanct clita</p>
-                </div>
-                <div class="testimonial-item">
-                    <div class="d-flex align-items-center mb-3">
-                        <img class="img-fluid" src="{% static 'img/testimonial-4.jpg' %}" alt="">
-                        <div class="ml-3">
-                            <h4>Client Name</h4>
-                            <i>Profession</i>
-                        </div>
-                    </div>
-                    <p class="m-0">Sed ea amet kasd elitr stet, stet rebum et ipsum est duo elitr eirmod clita lorem. Dolor tempor ipsum sanct clita</p>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
