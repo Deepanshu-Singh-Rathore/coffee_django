@@ -1,0 +1,8 @@
+New contact message from {{ name }}
+
+Name: {{ name }}
+Email: {{ email }}
+Sent at: {{ sent_at }}
+
+Message:
+{{ message }}

@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.conf import settings
 from core.models import MenuItem, ContactMessage, Reservation
 from hero.models import HeroSlide
 from feature.models import Feature as FeatureModel
@@ -81,11 +83,25 @@ def contact(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             msg = form.save()
-            # Send an email (development: console backend)
+            # Send an email (SMTP if configured, console in dev)
             subject = f"Contact message from {msg.name}"
-            body = f"Name: {msg.name}\nEmail: {msg.email}\n\nMessage:\n{msg.message}"
+            context = {
+                "name": msg.name,
+                "email": msg.email,
+                "message": msg.message,
+                "sent_at": msg.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            }
+            text_body = render_to_string('email/contact_message.txt', context)
+            html_body = render_to_string('email/contact_message.html', context)
             try:
-                send_mail(subject, body, None, ["info@example.com"])  # console in dev
+                email = EmailMultiAlternatives(
+                    subject,
+                    text_body,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [settings.CONTACT_EMAIL_TO],
+                )
+                email.attach_alternative(html_body, 'text/html')
+                email.send()
                 success = True
             except Exception as e:
                 email_error = "Sorry, it seems our mail server is not responding. Please try again later."
