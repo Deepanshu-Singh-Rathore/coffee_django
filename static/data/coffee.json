@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "title": "Black",
+    "description": "Black coffee is as simple as it gets with no added milk or sugar.",
+    "ingredients": ["Coffee"]
+  },
+  {
+    "id": 2,
+    "title": "Latte",
+    "description": "A latte is made with espresso and steamed milk.",
+    "ingredients": ["Espresso", "Steamed Milk"]
+  }
+]

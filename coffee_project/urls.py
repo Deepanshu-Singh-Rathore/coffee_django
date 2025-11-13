@@ -41,6 +41,8 @@ urlpatterns = [
     path('api-integration/', views.api_integration_page, name='api_integration'),
     # DRF v1 API
     path('api/v1/', include('api.urls')),
+    # Coffee data page
+    path('coffee/', views.coffeeData, name='coffee'),
 ]
 
 if settings.DEBUG:

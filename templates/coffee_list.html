@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Coffee Types</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Favicon -->
+  <link href="{% static 'img/favicon.ico' %}" rel="icon">
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Libraries Stylesheet -->
+  <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+  <link href="{% static 'lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" />
+
+  <!-- Customized Bootstrap Stylesheet -->
+  <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
+</head>
+
+<body>
+  {% include 'header.html' %}
+
+  <!-- Page Header Start -->
+  <div class="container-fluid page-header mb-5 position-relative overlay-bottom">
+    <div class="d-flex flex-column align-items-center justify-content-center pt-0 pt-lg-5" style="min-height: 300px">
+      <h1 class="display-4 mb-3 mt-0 mt-lg-5 text-white text-uppercase">Coffee Types</h1>
+      <div class="d-inline-flex mb-lg-5">
+        <p class="m-0 text-white"><a class="text-white" href="{% url 'home' %}">Home</a></p>
+        <p class="m-0 text-white px-2">/</p>
+        <p class="m-0 text-white">Coffee</p>
+      </div>
+    </div>
+  </div>
+  <!-- Page Header End -->
+
+  <div class="container my-4">
+    <h1 class="mb-4">Coffee Types</h1>
+
+    {% if error %}
+      <div class="alert alert-warning" role="alert">
+        {{ error }}
+      </div>
+    {% endif %}
+
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Ingredients</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for coffee in coffees %}
+            <tr>
+              <td>{{ coffee.id }}</td>
+              <td>{{ coffee.title }}</td>
+              <td>{{ coffee.description }}</td>
+              <td>
+                {% if coffee.ingredients %}
+                  {{ coffee.ingredients|join:", " }}
+                {% else %}
+                  —
+                {% endif %}
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="4" class="text-center">No coffee data available.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {% include 'footer.html' %}
+</body>
+
+</html>

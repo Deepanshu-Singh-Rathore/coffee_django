@@ -40,6 +40,97 @@
                 <p>No data returned yet.</p>
             {% endif %}
         {% endif %}
+
+        <hr class="my-5" />
+        <h2 class="mb-3">Coffee Types</h2>
+        <ul class="nav nav-tabs" id="coffeeTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="live" aria-selected="true">Live API</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="local-tab" data-toggle="tab" href="#local" role="tab" aria-controls="local" aria-selected="false">Local JSON</a>
+            </li>
+        </ul>
+        <div class="tab-content pt-3" id="coffeeTabsContent">
+            <!-- Live API Tab -->
+            <div class="tab-pane fade show active" id="live" role="tabpanel" aria-labelledby="live-tab">
+                {% if coffee_live_error %}
+                    <div class="alert alert-warning">{{ coffee_live_error }}</div>
+                {% endif %}
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Ingredients</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for coffee in coffee_live %}
+                                <tr>
+                                    <td>{{ coffee.id }}</td>
+                                    <td>{{ coffee.title }}</td>
+                                    <td>{{ coffee.description }}</td>
+                                    <td>
+                                        {% if coffee.ingredients %}
+                                            {{ coffee.ingredients|join:", " }}
+                                        {% else %}
+                                            —
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center">No data from live API.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Local JSON Tab -->
+            <div class="tab-pane fade" id="local" role="tabpanel" aria-labelledby="local-tab">
+                <p class="text-muted">Loaded from <code>static/data/coffee.json</code>. <a href="{% static 'data/coffee.json' %}" download>Download JSON</a></p>
+                {% if coffee_error %}
+                    <div class="alert alert-warning">{{ coffee_error }}</div>
+                {% endif %}
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Ingredients</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for coffee in coffee_data %}
+                                <tr>
+                                    <td>{{ coffee.id }}</td>
+                                    <td>{{ coffee.title }}</td>
+                                    <td>{{ coffee.description }}</td>
+                                    <td>
+                                        {% if coffee.ingredients %}
+                                            {{ coffee.ingredients|join:", " }}
+                                        {% else %}
+                                            —
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center">No local coffee data available.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
     {% include 'footer.html' %}
