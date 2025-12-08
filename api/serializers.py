@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import MenuItem, ContactMessage
+from core.models import MenuItem, ContactMessage, Student
 from blog.models import Category, Post
 from hero.models import HeroSlide
 from feature.models import Feature
@@ -80,3 +80,30 @@ class PromoSerializer(ImageUrlSerializerMixin, serializers.ModelSerializer):
         model = Promo
         fields = ['id', 'title', 'description', 'image', 'image_url', 'button_text', 'button_url', 'is_active', 'order']
         read_only_fields = ['id', 'image_url']
+
+
+class StudentSerializer(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Student
+        fields = [
+            'id', 'first_name', 'last_name', 'full_name', 'email',
+            'age', 'enrollment_date', 'is_active', 'created_at', 'updated_at'
+        ]
+        read_only_fields = ['id', 'full_name', 'created_at', 'updated_at']
+
+    def get_full_name(self, obj):
+        return f"{obj.first_name} {obj.last_name}".strip()
+
+    def validate_age(self, value):
+        if value < 3 or value > 120:
+            raise serializers.ValidationError('Age must be between 3 and 120.')
+        return value
+
+    def validate(self, attrs):
+        from datetime import date
+        enroll = attrs.get('enrollment_date')
+        if enroll and enroll > date.today():
+            raise serializers.ValidationError({'enrollment_date': 'Enrollment date cannot be in the future.'})
+        return attrs

@@ -5,6 +5,424 @@
     <meta charset="utf-8">
     <title>API Integration Demo</title>
     <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 </head>
 <body>
     {% include 'header.html' %}
@@ -28,109 +446,129 @@
 
         {% if error %}
             <div class="alert alert-danger">Failed to load API data: {{ error }}</div>
-        {% else %}
-            {% if third_party %}
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Random Cat Fact</h5>
-                        <p class="card-text">{{ third_party.fact }}</p>
-                    </div>
+        {% elif third_party %}
+            <div class="card mb-5">
+                <div class="card-body">
+                    <h5 class="card-title">Random Cat Fact</h5>
+                    <p class="card-text">{{ third_party.fact }}</p>
                 </div>
-            {% else %}
-                <p>No data returned yet.</p>
-            {% endif %}
+            </div>
+        {% else %}
+            <p class="text-muted">No data returned yet.</p>
         {% endif %}
 
         <hr class="my-5" />
-        <h2 class="mb-3">Coffee Types</h2>
-        <ul class="nav nav-tabs" id="coffeeTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="live" aria-selected="true">Live API</a>
-            </li>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link" id="local-tab" data-toggle="tab" href="#local" role="tab" aria-controls="local" aria-selected="false">Local JSON</a>
-            </li>
-        </ul>
-        <div class="tab-content pt-3" id="coffeeTabsContent">
-            <!-- Live API Tab -->
-            <div class="tab-pane fade show active" id="live" role="tabpanel" aria-labelledby="live-tab">
-                {% if coffee_live_error %}
-                    <div class="alert alert-warning">{{ coffee_live_error }}</div>
-                {% endif %}
-                <div class="table-responsive">
-                    <table class="table table-striped align-middle">
-                        <thead class="table-dark">
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Title</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Ingredients</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for coffee in coffee_live %}
-                                <tr>
-                                    <td>{{ coffee.id }}</td>
-                                    <td>{{ coffee.title }}</td>
-                                    <td>{{ coffee.description }}</td>
-                                    <td>
-                                        {% if coffee.ingredients %}
-                                            {{ coffee.ingredients|join:", " }}
-                                        {% else %}
-                                            —
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            {% empty %}
-                                <tr>
-                                    <td colspan="4" class="text-center">No data from live API.</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Local JSON Tab -->
-            <div class="tab-pane fade" id="local" role="tabpanel" aria-labelledby="local-tab">
-                <p class="text-muted">Loaded from <code>static/data/coffee.json</code>. <a href="{% static 'data/coffee.json' %}" download>Download JSON</a></p>
-                {% if coffee_error %}
-                    <div class="alert alert-warning">{{ coffee_error }}</div>
-                {% endif %}
-                <div class="table-responsive">
-                    <table class="table table-striped align-middle">
-                        <thead class="table-dark">
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Title</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Ingredients</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for coffee in coffee_data %}
-                                <tr>
-                                    <td>{{ coffee.id }}</td>
-                                    <td>{{ coffee.title }}</td>
-                                    <td>{{ coffee.description }}</td>
-                                    <td>
-                                        {% if coffee.ingredients %}
-                                            {{ coffee.ingredients|join:", " }}
-                                        {% else %}
-                                            —
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            {% empty %}
-                                <tr>
-                                    <td colspan="4" class="text-center">No local coffee data available.</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <h2 class="mb-3">Products (Client-Side via Our Proxy)</h2>
+        <p class="text-muted">Data from <code>https://fakestoreapi.com/products</code> proxied through our API.</p>
+        <div class="mb-3">
+            <button id="btnAll" class="btn btn-primary btn-sm mr-2">Load All</button>
+            <button id="btnRandomProd" class="btn btn-outline-primary btn-sm">Random</button>
         </div>
+        <div id="prodStatus" class="small text-muted mb-3"></div>
+        <div id="productCards" class="row"></div>
+
+        <script>
+        (function(){
+            const endpoints = {
+                list: "{% url 'product-list-proxy' %}",
+                random: "{% url 'product-random-proxy' %}",
+            };
+            const $grid = document.getElementById('productCards');
+            const $status = document.getElementById('prodStatus');
+
+            function fmtCurrency(value){
+                try { return new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD' }).format(value); }
+                catch(_) { return `$${value}`; }
+            }
+
+            function renderProducts(data){
+                const list = Array.isArray(data) ? data : [data];
+                $grid.innerHTML = '';
+                if (!list.length) {
+                    $status.textContent = 'No products to display.';
+                    return;
+                }
+                $status.textContent = '';
+                list.forEach(p => {
+                    const col = document.createElement('div');
+                    col.className = 'col-12 col-sm-6 col-lg-4 mb-4';
+
+                    const card = document.createElement('div');
+                    card.className = 'card h-100 shadow-sm';
+
+                    if (p.image) {
+                        const img = document.createElement('img');
+                        img.src = p.image;
+                        img.className = 'card-img-top';
+                        img.alt = p.title || 'Product image';
+                        img.loading = 'lazy';
+                        card.appendChild(img);
+                    }
+
+                    const body = document.createElement('div');
+                    body.className = 'card-body d-flex flex-column';
+
+                    const title = document.createElement('h5');
+                    title.className = 'card-title';
+                    title.textContent = p.title || 'Untitled Product';
+                    body.appendChild(title);
+
+                    const meta = document.createElement('div');
+                    meta.className = 'mb-2 small text-muted';
+                    meta.textContent = [p.category, (p.rating && p.rating.rate != null) ? `⭐ ${p.rating.rate} (${p.rating.count||0})` : null].filter(Boolean).join(' • ');
+                    body.appendChild(meta);
+
+                    if (p.description) {
+                        const desc = document.createElement('p');
+                        desc.className = 'card-text';
+                        desc.textContent = p.description;
+                        body.appendChild(desc);
+                    }
+
+                    const price = document.createElement('div');
+                    price.className = 'mt-auto font-weight-bold';
+                    price.textContent = p.price != null ? fmtCurrency(p.price) : '';
+                    body.appendChild(price);
+
+                    card.appendChild(body);
+                    col.appendChild(card);
+                    $grid.appendChild(col);
+                });
+            }
+
+            async function loadAll(){
+                try{
+                    $status.textContent = 'Loading all products…';
+                    $grid.innerHTML = '';
+                    const res = await fetch(endpoints.list, { credentials: 'same-origin' });
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    const data = await res.json();
+                    $status.textContent = `Loaded ${Array.isArray(data) ? data.length : 1} product(s).`;
+                    renderProducts(data);
+                }catch(err){
+                    $status.textContent = 'Failed to fetch products.';
+                }
+            }
+
+            async function loadRandom(){
+                try{
+                    $status.textContent = 'Loading a random product…';
+                    $grid.innerHTML = '';
+                    const res = await fetch(endpoints.random, { credentials: 'same-origin' });
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    const data = await res.json();
+                    $status.textContent = 'Loaded 1 product.';
+                    renderProducts(data);
+                }catch(err){
+                    $status.textContent = 'Failed to fetch a random product.';
+                }
+            }
+
+            document.getElementById('btnAll').addEventListener('click', loadAll);
+            document.getElementById('btnRandomProd').addEventListener('click', loadRandom);
+            loadAll();
+        })();
+        </script>
     </div>
 
     {% include 'footer.html' %}

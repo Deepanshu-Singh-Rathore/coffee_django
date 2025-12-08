@@ -14,6 +14,7 @@ from core.forms import MenuItemForm, ContactForm, ReservationForm
 from blog.models import Post
 from django.db.models import Q
 from pathlib import Path
+ 
 
 
 def HomePage(request):
@@ -182,67 +183,14 @@ def api_integration_page(request):
     except Exception as e:
         error = str(e)
 
-    # Live Coffee API example
-    coffee_live = []
-    coffee_live_error = None
-    try:
-        live_resp = requests.get('https://api.sampleapis.com/coffee/hot', timeout=8)
-        live_resp.raise_for_status()
-        coffee_live = live_resp.json()
-    except requests.RequestException as e:
-        coffee_live_error = f"Live API error: {getattr(e.response, 'status_code', '')}".strip()
-
-    # Local JSON example (coffee data)
-    coffee_data = []
-    coffee_error = None
-    try:
-        json_path = Path(settings.BASE_DIR) / 'static' / 'data' / 'coffee.json'
-        if json_path.exists():
-            with open(json_path, 'r', encoding='utf-8') as f:
-                coffee_data = json.load(f)
-        else:
-            coffee_error = 'Local coffee.json not found.'
-    except Exception:
-        coffee_error = 'Failed to load local coffee.json.'
-
     return render(
         request,
         'api_integration.html',
         {
             "third_party": third_party,
             "error": error,
-            "coffee_live": coffee_live,
-            "coffee_live_error": coffee_live_error,
-            "coffee_data": coffee_data,
-            "coffee_error": coffee_error,
         },
     )
 
 
-def coffeeData(request):
-    """
-    Fetch coffee types from the public API and render them in a table.
-    Falls back to static/data/coffee.json if the API is unavailable.
-    """
-    api_url = "https://api.sampleapis.com/coffee/hot"
-    coffees = []
-    error = None
-
-    try:
-        resp = requests.get(api_url, timeout=8)
-        resp.raise_for_status()
-        coffees = resp.json()
-    except requests.RequestException:
-        # Fallback to local JSON file if present
-        json_path = Path(settings.BASE_DIR) / "static" / "data" / "coffee.json"
-        try:
-            if json_path.exists():
-                with open(json_path, "r", encoding="utf-8") as f:
-                    coffees = json.load(f)
-            else:
-                error = "Unable to fetch coffee data."
-        except Exception:
-            error = "Unable to fetch coffee data."
-
-    context = {"coffees": coffees, "error": error}
-    return render(request, "coffee_list.html", context)
+ 

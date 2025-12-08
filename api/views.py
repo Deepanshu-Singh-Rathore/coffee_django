@@ -1,7 +1,11 @@
 from rest_framework import viewsets, mixins, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from core.models import MenuItem, ContactMessage
+from rest_framework.views import APIView
+from django.core.cache import cache
+import requests
+import random
+from core.models import MenuItem, ContactMessage, Student
 from blog.models import Category, Post
 from hero.models import HeroSlide
 from feature.models import Feature
@@ -9,7 +13,7 @@ from promo.models import Promo
 from .serializers import (
     MenuItemSerializer, ContactMessageSerializer,
     CategorySerializer, PostSerializer,
-    HeroSlideSerializer, FeatureSerializer, PromoSerializer,
+    HeroSlideSerializer, FeatureSerializer, PromoSerializer, StudentSerializer,
 )
 
 
@@ -69,3 +73,72 @@ class ContactMessageViewSet(mixins.CreateModelMixin,
         if self.action == 'create':
             return [permissions.AllowAny()]
         return [permissions.IsAdminUser()]
+
+
+class StudentViewSet(ReadOnlyOrAdmin):
+    queryset = Student.objects.all().order_by('last_name', 'first_name')
+    serializer_class = StudentSerializer
+
+
+FAKESTORE_BASE_URL = "https://fakestoreapi.com"
+
+
+class ProductListProxy(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        category = request.GET.get("category")
+        cache_key = f"fakestore_products_{category or 'all'}"
+        data = cache.get(cache_key)
+        if data is None:
+            try:
+                if category:
+                    url = f"{FAKESTORE_BASE_URL}/products/category/{category}"
+                else:
+                    url = f"{FAKESTORE_BASE_URL}/products"
+                resp = requests.get(url, timeout=10)
+                resp.raise_for_status()
+                data = resp.json()
+                cache.set(cache_key, data, 300)  # 5 minutes
+            except requests.RequestException as e:
+                status_code = getattr(getattr(e, 'response', None), 'status_code', 502) or 502
+                return Response({"detail": "Upstream products API error."}, status=status_code)
+        return Response(data)
+
+
+class ProductDetailProxy(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, product_id: int):
+        cache_key = f"fakestore_product_{product_id}"
+        data = cache.get(cache_key)
+        if data is None:
+            try:
+                url = f"{FAKESTORE_BASE_URL}/products/{product_id}"
+                resp = requests.get(url, timeout=10)
+                resp.raise_for_status()
+                data = resp.json()
+                cache.set(cache_key, data, 300)
+            except requests.RequestException as e:
+                status_code = getattr(getattr(e, 'response', None), 'status_code', 502) or 502
+                return Response({"detail": "Upstream products API error."}, status=status_code)
+        return Response(data)
+
+
+class ProductRandomProxy(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        cache_key = "fakestore_products_all"
+        data = cache.get(cache_key)
+        if data is None:
+            try:
+                resp = requests.get(f"{FAKESTORE_BASE_URL}/products", timeout=10)
+                resp.raise_for_status()
+                data = resp.json()
+                cache.set(cache_key, data, 300)
+            except requests.RequestException:
+                return Response({"detail": "Upstream products API error."}, status=502)
+        if not data:
+            return Response({"detail": "No products available."}, status=502)
+        return Response(random.choice(data))
