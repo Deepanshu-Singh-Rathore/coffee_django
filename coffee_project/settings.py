@@ -15,7 +15,7 @@ import os
 try:
     from dotenv import load_dotenv
 except Exception:  # Fallback if python-dotenv isn't installed yet
-    def load_dotenv(*args, **kwargs):
+    def load_dotenv(*args, **kwargs) -> bool:
         return False
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -149,21 +149,17 @@ MEDIA_ROOT = BASE_DIR / 'media'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Email configuration
-# If EMAIL_HOST is defined, use SMTP; otherwise fall back to console backend (useful in development).
-EMAIL_HOST = os.getenv('EMAIL_HOST')
+# Gmail SMTP configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'deepanshu052005@gmail.com')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')  # Set your Gmail app password here
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'true').lower() in ('1', 'true', 'yes')
 EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'false').lower() in ('1', 'true', 'yes')
 
-EMAIL_BACKEND = (
-    'django.core.mail.backends.smtp.EmailBackend'
-    if EMAIL_HOST else 'django.core.mail.backends.console.EmailBackend'
-)
-
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'no-reply@example.com')
-CONTACT_EMAIL_TO = os.getenv('CONTACT_EMAIL_TO', 'info@example.com')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'deepanshu052005@gmail.com')
+CONTACT_EMAIL_TO = os.getenv('CONTACT_EMAIL_TO', 'deepanshu052005@gmail.com')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

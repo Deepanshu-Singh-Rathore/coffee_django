@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from django.core.cache import cache
 import requests
 import random
-from core.models import MenuItem, ContactMessage, Student
+from core.models import MenuItem, ContactMessage, Coffee
 from blog.models import Category, Post
 from hero.models import HeroSlide
 from feature.models import Feature
@@ -13,7 +13,7 @@ from promo.models import Promo
 from .serializers import (
     MenuItemSerializer, ContactMessageSerializer,
     CategorySerializer, PostSerializer,
-    HeroSlideSerializer, FeatureSerializer, PromoSerializer, StudentSerializer,
+    HeroSlideSerializer, FeatureSerializer, PromoSerializer, CoffeeSerializer,
 )
 
 
@@ -75,9 +75,29 @@ class ContactMessageViewSet(mixins.CreateModelMixin,
         return [permissions.IsAdminUser()]
 
 
-class StudentViewSet(ReadOnlyOrAdmin):
-    queryset = Student.objects.all().order_by('last_name', 'first_name')
-    serializer_class = StudentSerializer
+class CoffeeViewSet(ReadOnlyOrAdmin):
+    queryset = Coffee.objects.all().order_by('name')
+    serializer_class = CoffeeSerializer
+
+    @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
+    def by_roast(self, request):
+        roast = request.GET.get('roast')
+        if roast:
+            qs = self.get_queryset().filter(roast_type=roast)
+        else:
+            qs = self.get_queryset()
+        serializer = self.get_serializer(qs, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
+    def by_origin(self, request):
+        origin = request.GET.get('origin')
+        if origin:
+            qs = self.get_queryset().filter(origin__icontains=origin)
+        else:
+            qs = self.get_queryset()
+        serializer = self.get_serializer(qs, many=True)
+        return Response(serializer.data)
 
 
 FAKESTORE_BASE_URL = "https://fakestoreapi.com"

@@ -5,39 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>New Contact Message</title>
     <style>
-      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, 'Helvetica Neue', Helvetica, sans-serif; background:#f6f6f9; margin:0; padding:24px; }
-      .card { max-width:640px; margin:0 auto; background:#ffffff; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.06); overflow:hidden; }
-      .header { background:#2b1a16; color:#fff; padding:16px 20px; }
-      .header h1 { margin:0; font-size:20px; letter-spacing:0.5px; }
-      .content { padding:20px; color:#333; }
-      .row { margin-bottom:12px; }
-      .label { color:#6b7280; font-size:12px; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px; }
-      .value { font-size:16px; color:#111827; }
-      .message { white-space:pre-wrap; line-height:1.6; border:1px solid #eee; background:#fafafa; padding:12px; border-radius:8px; }
-      .footer { padding:16px 20px; color:#6b7280; font-size:12px; background:#fafafa; }
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); margin:0; padding:40px 20px; }
+      .card { max-width:640px; margin:0 auto; background:#ffffff; border-radius:12px; box-shadow:0 10px 40px rgba(0,0,0,0.1); overflow:hidden; }
+      .header { background: linear-gradient(135deg, #6f4e37 0%, #8b6f47 100%); color:#fff; padding:40px 30px; text-align:center; }
+      .header h1 { margin:0; font-size:28px; font-weight:600; margin-bottom:8px; }
+      .header p { margin:0; font-size:14px; opacity:0.9; }
+      .content { padding:40px 30px; color:#333; }
+      .row { margin-bottom:30px; }
+      .label { color:#6b7280; font-size:12px; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px; font-weight:700; }
+      .value { font-size:16px; color:#1f2937; font-weight:500; }
+      .value a { color: #8b6f47; text-decoration: none; }
+      .message { white-space:pre-wrap; line-height:1.8; border-left: 4px solid #8b6f47; background: #f9f7f4; padding:20px; border-radius:8px; color:#374151; }
+      .divider { height: 1px; background: #e5e7eb; margin: 30px 0; }
+      .footer { padding:20px 30px; color:#6b7280; font-size:12px; background:#f9fafb; border-top: 1px solid #e5e7eb; text-align:center; }
     </style>
   </head>
   <body>
     <div class="card">
       <div class="header">
-        <h1>New Contact Message</h1>
+        <h1>☕ New Contact Message</h1>\n      <p>Someone reached out to you</p>
       </div>
       <div class="content">
-        <div class="row">
-          <div class="label">From</div>
-          <div class="value">{{ name }} &lt;{{ email }}&gt;</div>
+        <div class=\"row\">
+          <div class=\"label\">👤 From</div>
+          <div class=\"value\">{{ name }}</div>
         </div>
-        <div class="row">
-          <div class="label">Sent at</div>
-          <div class="value">{{ sent_at }}</div>
+        <div class=\"row\">
+          <div class=\"label\">📧 Email</div>
+          <div class=\"value\"><a href=\"mailto:{{ email }}\">{{ email }}</a></div>
         </div>
-        <div class="row">
-          <div class="label">Message</div>
-          <div class="message">{{ message }}</div>
+        <div class=\"row\">
+          <div class=\"label\">⏰ Received</div>
+          <div class=\"value\">{{ sent_at }}</div>
+        </div>
+        <div class=\"divider\"></div>
+        <div class=\"row\">
+          <div class=\"label\">💬 Message</div>
+          <div class=\"message\">{{ message }}</div>
         </div>
       </div>
-      <div class="footer">
-        Coffee Shop Website • This email was generated automatically from the Contact form.
+      <div class=\"footer\">
+        <p>✨ This message was sent from your Coffee Shop website contact form</p>
+        <p style=\"font-size:11px; opacity:0.7; margin-top:10px;\">© 2025 Coffee Project. All rights reserved.</p>
       </div>
     </div>
   </body>

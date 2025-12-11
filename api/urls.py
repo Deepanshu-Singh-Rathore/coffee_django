@@ -4,7 +4,7 @@ from rest_framework.authtoken import views as drf_authtoken_views
 from .views import (
     MenuItemViewSet, CategoryViewSet, PostViewSet,
     HeroSlideViewSet, FeatureViewSet, PromoViewSet,
-    ContactMessageViewSet, StudentViewSet,
+    ContactMessageViewSet, CoffeeViewSet,
     ProductListProxy, ProductDetailProxy, ProductRandomProxy,
 )
 
@@ -16,7 +16,7 @@ router.register(r'hero-slides', HeroSlideViewSet, basename='heroslide')
 router.register(r'features', FeatureViewSet, basename='feature')
 router.register(r'promos', PromoViewSet, basename='promo')
 router.register(r'contact-messages', ContactMessageViewSet, basename='contactmessage')
-router.register(r'students', StudentViewSet, basename='student')
+router.register(r'coffees', CoffeeViewSet, basename='coffee')
 
 urlpatterns = [
     path('', include(router.urls)),

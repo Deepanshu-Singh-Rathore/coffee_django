@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import MenuItem, ContactMessage, Student
+from core.models import MenuItem, ContactMessage, Coffee
 from blog.models import Category, Post
 from hero.models import HeroSlide
 from feature.models import Feature
@@ -82,28 +82,23 @@ class PromoSerializer(ImageUrlSerializerMixin, serializers.ModelSerializer):
         read_only_fields = ['id', 'image_url']
 
 
-class StudentSerializer(serializers.ModelSerializer):
-    full_name = serializers.SerializerMethodField(read_only=True)
+class CoffeeSerializer(serializers.ModelSerializer):
+    roast_display = serializers.CharField(source='get_roast_type_display', read_only=True)
 
     class Meta:
-        model = Student
+        model = Coffee
         fields = [
-            'id', 'first_name', 'last_name', 'full_name', 'email',
-            'age', 'enrollment_date', 'is_active', 'created_at', 'updated_at'
+            'id', 'name', 'roast_type', 'roast_display', 'origin', 'price',
+            'description', 'flavor_notes', 'is_available', 'created_at', 'updated_at'
         ]
-        read_only_fields = ['id', 'full_name', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'roast_display', 'created_at', 'updated_at']
 
-    def get_full_name(self, obj):
-        return f"{obj.first_name} {obj.last_name}".strip()
-
-    def validate_age(self, value):
-        if value < 3 or value > 120:
-            raise serializers.ValidationError('Age must be between 3 and 120.')
+    def validate_price(self, value):
+        if value <= 0:
+            raise serializers.ValidationError('Price must be greater than 0.')
         return value
 
     def validate(self, attrs):
-        from datetime import date
-        enroll = attrs.get('enrollment_date')
-        if enroll and enroll > date.today():
-            raise serializers.ValidationError({'enrollment_date': 'Enrollment date cannot be in the future.'})
+        if not attrs.get('name'):
+            raise serializers.ValidationError({'name': 'Coffee name is required.'})
         return attrs
