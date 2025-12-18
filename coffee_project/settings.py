@@ -40,7 +40,7 @@ if _hosts_env is not None:
     _parsed = [h.strip() for h in _hosts_env.split(',') if h.strip()]
     ALLOWED_HOSTS = _parsed if _parsed else ['.vercel.app', 'localhost', '127.0.0.1']
 else:
-    ALLOWED_HOSTS = ['.vercel.app', 'localhost', '127.0.0.1']
+    ALLOWED_HOSTS = ['.vercel.app', '.pythonanywhere.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -169,7 +169,7 @@ if env_csrf is not None:
     _csrf_list = [o.strip() for o in env_csrf.split(',') if o.strip()]
     CSRF_TRUSTED_ORIGINS = _csrf_list if _csrf_list else [default_csrf]
 else:
-    CSRF_TRUSTED_ORIGINS = [default_csrf]
+    CSRF_TRUSTED_ORIGINS = [default_csrf, 'https://*.pythonanywhere.com']
 
 # Email configuration
 # Gmail SMTP configuration
