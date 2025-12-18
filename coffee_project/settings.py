@@ -34,7 +34,11 @@ SECRET_KEY = 'django-insecure-9+pvc@#5ld_brh)d*yri0qc186n0h^c5r*43x@0x6v5g-0o=&f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DJANGO_DEBUG', 'true').lower() in ('1', 'true', 'yes')
 
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',') if not DEBUG else []
+# Allow Vercel by default; override via env in production
+ALLOWED_HOSTS = (
+    os.getenv('DJANGO_ALLOWED_HOSTS', '.vercel.app,localhost,127.0.0.1').split(',')
+    if not DEBUG else []
+)
 
 
 # Application definition
@@ -147,6 +151,17 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # Whitenoise static file storage for production
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Behind Vercel proxy
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Security cookies in production
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+
+# CSRF trusted origins (set exact domains via env in production)
+CSRF_TRUSTED_ORIGINS = os.getenv('DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',') if not DEBUG else []
 
 # Email configuration
 # Gmail SMTP configuration
