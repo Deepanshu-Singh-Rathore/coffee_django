@@ -32,7 +32,7 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = 'django-insecure-9+pvc@#5ld_brh)d*yri0qc186n0h^c5r*43x@0x6v5g-0o=&f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_DEBUG', 'true').lower() in ('1', 'true', 'yes')
+DEBUG = os.getenv('DJANGO_DEBUG', 'false').lower() in ('1', 'true', 'yes')
 
 # Allow Vercel and local hosts by default; robust env parsing
 _hosts_env = os.getenv('DJANGO_ALLOWED_HOSTS')
