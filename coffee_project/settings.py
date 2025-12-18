@@ -34,11 +34,8 @@ SECRET_KEY = 'django-insecure-9+pvc@#5ld_brh)d*yri0qc186n0h^c5r*43x@0x6v5g-0o=&f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DJANGO_DEBUG', 'true').lower() in ('1', 'true', 'yes')
 
-# Allow Vercel by default; override via env in production
-ALLOWED_HOSTS = (
-    os.getenv('DJANGO_ALLOWED_HOSTS', '.vercel.app,localhost,127.0.0.1').split(',')
-    if not DEBUG else []
-)
+# Allow Vercel and local hosts by default; override via env
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '.vercel.app,localhost,127.0.0.1').split(',')
 
 
 # Application definition
@@ -160,8 +157,12 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
 
-# CSRF trusted origins (set exact domains via env in production)
-CSRF_TRUSTED_ORIGINS = os.getenv('DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',') if not DEBUG else []
+# CSRF trusted origins: include Vercel wildcard by default; can override via env
+default_csrf = 'https://*.vercel.app'
+env_csrf = os.getenv('DJANGO_CSRF_TRUSTED_ORIGINS')
+CSRF_TRUSTED_ORIGINS = (
+    env_csrf.split(',') if env_csrf else [default_csrf]
+)
 
 # Email configuration
 # Gmail SMTP configuration
