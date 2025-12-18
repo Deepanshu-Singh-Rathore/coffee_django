@@ -1,14 +1,6 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "api/index.py", "use": "@vercel/python" }
-  ],
-  "routes": [
-    { "src": "/static/(.*)", "dest": "/static/$1" },
-    { "src": "/(.*)", "dest": "/api/index.py" }
-  ],
-  "env": {
-    "DJANGO_SETTINGS_MODULE": "coffee_project.settings",
-    "PYTHONUNBUFFERED": "1"
-  }
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/api/index.py" }
+  ]
 }
