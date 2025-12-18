@@ -42,6 +42,9 @@ if _hosts_env is not None:
 else:
     ALLOWED_HOSTS = ['.vercel.app', '.pythonanywhere.com', 'localhost', '127.0.0.1']
 
+if 'Deepanshu05.pythonanywhere.com' not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append('Deepanshu05.pythonanywhere.com')
+
 
 # Application definition
 
